@@ -1,11 +1,12 @@
 import 'package:flutter/material.dart';
 
 class VideoListScreen extends StatelessWidget {
-  const VideoListScreen({super.key});
+  const VideoListScreen({
+    super.key,
+  });
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-    );
+    return Scaffold();
   }
 }
