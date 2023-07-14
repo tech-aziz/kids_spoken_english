@@ -2,7 +2,6 @@ import 'package:carousel_indicator/carousel_indicator.dart';
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
-import 'package:google_nav_bar/google_nav_bar.dart';
 import 'package:kids_spoken_english/utils/config.dart';
 import 'package:kids_spoken_english/views/BottomNavBarScreens/rate_us_screen.dart';
 import 'package:kids_spoken_english/views/BottomNavBarScreens/share_screen.dart';
@@ -94,9 +93,9 @@ class _HomeScreenState extends State<HomeScreen> {
     final orientation =
         MediaQuery.orientationOf(context) == Orientation.portrait;
     return Scaffold(
+      drawer: const NavigationDrawer(),
       appBar: AppBar(
         centerTitle: true,
-        leading: const IconButton(onPressed: null, icon: Icon(Icons.menu)),
         title: const Text(appName),
       ),
       body: SafeArea(
@@ -159,8 +158,10 @@ class _HomeScreenState extends State<HomeScreen> {
                                 onTap: () => Navigator.push(
                                   context,
                                   MaterialPageRoute(
-                                    builder: (_) => const VideoListScreen(
-                                    ),
+                                    builder: (_) => VideoListScreen(
+                                      slug: data['slug'],
+                                        img: data['image'],
+                                        title: data['name']),
                                   ),
                                 ),
                                 child: Card(
@@ -269,4 +270,62 @@ class _HomeScreenState extends State<HomeScreen> {
       // ),
     );
   }
+}
+
+class NavigationDrawer extends StatelessWidget {
+  const NavigationDrawer({super.key});
+
+  @override
+  Widget build(BuildContext context) => Drawer(
+
+        child: ListView(
+          children: [
+            DrawerHeader(
+
+              decoration: const BoxDecoration(
+                  color: Colors.blue,
+                  image: DecorationImage(
+                      image: AssetImage('assets/images/slider_image7.jpg'),
+                      fit: BoxFit.cover)),
+              child: Container(),
+            ),
+            const Column(
+              children: [
+                ListTile(
+                  title: Text(
+                    'Home',
+                    style: TextStyle(fontWeight: FontWeight.bold),
+                  ),
+                  leading: Icon(Icons.home),
+                ),
+                ListTile(
+                  title: Text('Privacy Policy',
+                      style: TextStyle(fontWeight: FontWeight.bold)),
+                  leading: Icon(Icons.privacy_tip),
+                ),
+                ListTile(
+                  title: Text('Rate Us',
+                      style: TextStyle(fontWeight: FontWeight.bold)),
+                  leading: Icon(Icons.star),
+                ),
+                ListTile(
+                  title: Text('Share',
+                      style: TextStyle(fontWeight: FontWeight.bold)),
+                  leading: Icon(Icons.share),
+                ),
+                ListTile(
+                  title: Text('Update',
+                      style: TextStyle(fontWeight: FontWeight.bold)),
+                  leading: Icon(Icons.update),
+                ),
+                ListTile(
+                  title: Text('Exit',
+                      style: TextStyle(fontWeight: FontWeight.bold)),
+                  leading: Icon(Icons.logout),
+                ),
+              ],
+            ),
+          ],
+        ),
+      );
 }
