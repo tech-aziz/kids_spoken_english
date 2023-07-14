@@ -160,8 +160,10 @@ class _HomeScreenState extends State<HomeScreen> {
                                   MaterialPageRoute(
                                     builder: (_) => VideoListScreen(
                                       slug: data['slug'],
-                                        img: data['image'],
-                                        title: data['name']),
+                                      img: data['image'],
+                                      title: data['name'],
+                                      uid: data.id,
+                                    ),
                                   ),
                                 ),
                                 child: Card(
@@ -277,11 +279,9 @@ class NavigationDrawer extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) => Drawer(
-
         child: ListView(
           children: [
             DrawerHeader(
-
               decoration: const BoxDecoration(
                   color: Colors.blue,
                   image: DecorationImage(

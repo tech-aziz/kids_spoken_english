@@ -4,11 +4,18 @@ import 'package:flutter/material.dart';
 import '../../utils/colors.dart';
 
 class VideoListScreen extends StatelessWidget {
-  String img;
-  String title;
-  String slug;
+  final String img;
+  final String title;
+  final String slug;
+  final String uid;
 
-  VideoListScreen({super.key, required this.img, required this.title, required this.slug});
+  const VideoListScreen({
+    super.key,
+    required this.img,
+    required this.title,
+    required this.slug,
+    required this.uid,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -38,65 +45,72 @@ class VideoListScreen extends StatelessWidget {
                       borderRadius: BorderRadius.circular(12)),
                 ),
               ),
-           StreamBuilder(
-             stream: fireStore.collection('categories').doc(slug).snapshots(),
-             builder: (context, snapshot) {
-               if(snapshot.connectionState == ConnectionState.waiting){
-                 return Center(
-                   child: CircularProgressIndicator(),
-                 );
-               }else{
-                 return    Padding(
-                   padding: const EdgeInsets.all(8.0),
-                   child: ListView.builder(
-                     itemCount: snapshot.data!.data()!.length,
-                     shrinkWrap: true,
-                     primary: false,
-                     itemBuilder: (context, index) {
-                       final data = snapshot.data!.data()![index];
-                       return Padding(
-                         padding: const EdgeInsets.only(top: 12),
-                         child: Column(
-                           children: [
-                             Container(
-                               decoration: BoxDecoration(
-                                   color: Colors.black.withOpacity(0.2),
-                                   borderRadius: BorderRadius.circular(12)),
-                               child: Padding(
-                                 padding: const EdgeInsets.only(bottom: 10),
-                                 child: Column(
-                                   children: [
-                                     Container(
-                                       height: size.height * .2,
-                                       width: size.width,
-                                       // color: Colors.green,
-                                       decoration: BoxDecoration(
-                                           border: Border.all(
-                                               width: 2, color: Colors.green),
-                                           borderRadius: BorderRadius.circular(12),
-                                           image: DecorationImage(
-                                               image: NetworkImage(data['image']),
-                                               fit: BoxFit.cover)),
-                                     ),
-                                     SizedBox(height: 5,),
-                                     Text(
-                                       data['title'],
-                                       style: const TextStyle(
-                                           fontSize: 15, fontWeight: FontWeight.bold),
-                                     )
-                                   ],
-                                 ),
-                               ),
-                             ),
-                           ],
-                         ),
-                       );
-                     },
-                   ),
-                 );
-               }
-             },
-           )
+              StreamBuilder(
+                stream:
+                    fireStore.collection('categories').doc(uid).collection(slug).snapshots(),
+                builder: (context, snapshot) {
+                  if (snapshot.connectionState == ConnectionState.waiting) {
+                    return const Center(
+                      child: CircularProgressIndicator(),
+                    );
+                  } else {
+                    return Padding(
+                      padding: const EdgeInsets.all(8.0),
+                      child: ListView.builder(
+                        itemCount: snapshot.data!.docs.length,
+                        shrinkWrap: true,
+                        primary: false,
+                        itemBuilder: (context, index) {
+                          final data = snapshot.data!.docs[index];
+                          return Padding(
+                            padding: const EdgeInsets.only(top: 12),
+                            child: Column(
+                              children: [
+                                Container(
+                                  decoration: BoxDecoration(
+                                      color: Colors.black.withOpacity(0.2),
+                                      borderRadius: BorderRadius.circular(12)),
+                                  child: Padding(
+                                    padding: const EdgeInsets.only(bottom: 10),
+                                    child: Column(
+                                      children: [
+                                        Container(
+                                          height: size.height * .2,
+                                          width: size.width,
+                                          // color: Colors.green,
+                                          decoration: BoxDecoration(
+                                              border: Border.all(
+                                                  width: 2,
+                                                  color: Colors.green),
+                                              borderRadius:
+                                                  BorderRadius.circular(12),
+                                              image: DecorationImage(
+                                                  image: NetworkImage(
+                                                      data['image']),
+                                                  fit: BoxFit.cover)),
+                                        ),
+                                        const SizedBox(
+                                          height: 5,
+                                        ),
+                                        Text(
+                                          data['title'],
+                                          style: const TextStyle(
+                                              fontSize: 15,
+                                              fontWeight: FontWeight.bold),
+                                        ),
+                                      ],
+                                    ),
+                                  ),
+                                ),
+                              ],
+                            ),
+                          );
+                        },
+                      ),
+                    );
+                  }
+                },
+              )
             ],
           ),
         ),
