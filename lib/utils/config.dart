@@ -1,0 +1,1 @@
+const appName = 'Kid\'s Spoken English';
